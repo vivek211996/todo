@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>React Todo </title>
+    <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="root"></div>
+
+    <script type="text/babel">
+            var count = 0;
+             const TodoApp = () => {
+
+        const [todos, setTodos] = React.useState([{id: count++}]);
+
+        const [input, setInput] = React.useState("");
+
+        const addTodo = () => {
+          setTodos((data) => data.concat([{value : input , status : true,id: count++ }]));
+
+        };
+
+        const deletetodo = (index) => {
+            setTodos((data) => data.filter((val,ind) => val.id!=index) )
+        }
+
+        const statuschange = (index) =>{
+            setTodos(data => data.map((val,ind) => {
+                console.log(val,ind,index)
+                if(val.id==index) 
+                return ({value: val.value, status: !val.status , id: val.id}) 
+                else 
+                return (val)
+                })) 
+        }
+
+        return (
+          <div className="main">
+            <input
+              type="text"
+              value={input}
+              onChange={(event) => setInput(event.target.value)}
+            />
+            <button onClick={addTodo}>Add Todo</button>
+
+            <ol>
+              {todos.filter(todo => todo.status == true ).map((todo, index) => (
+               <li key={todo.id}>{todo.value} <button onClick={() => deletetodo(todo.id)}>delete</button></li>
+             ))}
+            </ol>
+           
+          </div>
+        );
+      };
+
+      ReactDOM.render(<TodoApp/>, document.getElementById("root"));
+        </script>
+</body>
+</html>
